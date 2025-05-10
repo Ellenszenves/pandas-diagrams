@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import requests
 import csv
 import seaborn as sns
+import tkinter as tk
 
 def download():
     """downloading data"""
@@ -46,7 +47,7 @@ def clear_data():
             i += 1
     dict = {'year': year, 'male': male, 'woman': woman,'total': total}
     df = pd.DataFrame(dict)
-    print(df)
+    #print(df)
     df.to_csv('tisztitott_nepesseg.csv', header=True, index=False)
     
 def analyze():
@@ -54,6 +55,15 @@ def analyze():
     df = pd.read_csv('tisztitott_nepesseg.csv')
     print(df.head())
     print(df.corr())
+
+def analyze_win():
+    """GUI statistics"""
+    df = pd.read_csv('tisztitott_nepesseg.csv')
+    stat_window = tk.Toplevel()
+    stat_window.title("Népesség Analizátor")
+    text_widget = tk.Text(stat_window, width=60, height=15)
+    text_widget.pack(padx=10, pady=10)
+    text_widget.insert(tk.END, df.to_string(index=False))
 
 def line_diagram():
     """creating line-diagram"""
@@ -69,9 +79,32 @@ def dot_diagram():
     plt.title("Teljes népesség alakulása/lineáris regresszió")
     plt.show()
 
+def window_mode():
+    """Creating GUI"""
+    #Ablak
+    window = tk.Tk()
+    window.title("Népesség Analizátor")
+    window.geometry("250x300")
+    label = tk.Label(window, text="Nyomjon meg egy gombot!", font=("Arial", 14))
+    label.pack(pady=10)
+    #Gombok
+    download_button = tk.Button(window, text="Letöltés", command=download)
+    download_button.pack(pady=5)
+    clear_button = tk.Button(window, text="Tisztítás", command=clear_data)
+    clear_button.pack(pady=5)
+    analyze_button = tk.Button(window, text="Statisztika", command=analyze_win)
+    analyze_button.pack(pady=5)
+    dot_button = tk.Button(window, text="Pont-diagram", command=dot_diagram)
+    dot_button.pack(pady=5)
+    line_button = tk.Button(window, text="Vonal-diagram", command=line_diagram)
+    line_button.pack(pady=5)
+    exit_button = tk.Button(window, text="Kilépés", command=exit)
+    exit_button.pack(pady=5)
+    window.mainloop()
+
 def main_menu():
     """interactive menu"""
-    print("Hello! Funkciók:\n 1. Letöltés\n 2. Tisztítás\n 3. Statisztika\n 4. Pont-diagram\n 5. Vonal-diagram\n 6. Kilépés")
+    print("Hello! Funkciók:\n 1. Letöltés\n 2. Tisztítás\n 3. Statisztika\n 4. Pont-diagram\n 5. Vonal-diagram\n 6. Grafikus felület\n 7. Kilépés")
     func = input("Kívánt funkció: ")
     if func == "1":
         download()
@@ -84,6 +117,8 @@ def main_menu():
     elif func == "5":
         line_diagram()
     elif func == "6":
+        window_mode()
+    elif func == "7":
         print("Bye!")
         exit
     else:
