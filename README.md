@@ -1,11 +1,11 @@
 # pandas-diagrams
 
 #Függőségek  
-Szükséges library-k, indítás előtt kérlek ellenőrizd, hogy telepítve vannak e:
+Szükséges library-k, indítás előtt kérlek ellenőrizd, hogy telepítve vannak-e:  
 pandas, matplotlib.pyplot, requests, csv, seaborn
 
 #Használat  
-Indítás: python3 solution.py
+Indítás: python3 solution.py  
 Egy interaktív menü segítségével érhetjük el a funkciókat.
 1. Letöltés
    Ez a funkció letölti a KSH oldaláról a legfrissebb népességi adatokat, ezután automatikusan létrehoz egy analizáláshoz alkalmas tisztított fájlt is.
