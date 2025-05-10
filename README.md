@@ -2,7 +2,7 @@
 
 #Függőségek  
 Szükséges library-k, indítás előtt kérlek ellenőrizd, hogy telepítve vannak-e:  
-pandas, matplotlib.pyplot, requests, csv, seaborn
+pandas, matplotlib.pyplot, requests, csv, seaborn, tkinter
 
 #Használat  
 Indítás: python3 solution.py  
@@ -17,5 +17,7 @@ Egy interaktív menü segítségével érhetjük el a funkciókat.
    Ez a funkció létrehoz egy pont diagramot, a teljes népesség értékeivel.
 5. Vonal-diagram
    Egy vonal diagramot kapunk, melyen a teljes népesség mellett a női és férfi népességi adatok is szerepelnek.
-6. Kilépés
+6. Grafikus felülfet
+   Egy egyszerű grafikus felület, melyen a funkciók a gombok megnyomása után érhetőek el.
+7. Kilépés
    Ezzel a funkcióval kiléphet a programból.
