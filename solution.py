@@ -6,6 +6,17 @@ import seaborn as sns
 import tkinter as tk
 import os.path
 
+#Error messages
+tiszt_err = 'A tisztitott_nepesseg.csv file nem létezik, kérlek használd a tisztítás vagy a letöltés funkciót.'
+nep_err = 'A nepesseg.csv file nem létezik, kérlek használd a letöltés funkciót.'
+
+def file_check(mode):
+    """Check for the required files"""
+    if mode == 0:
+        return os.path.isfile("nepesseg.csv")
+    elif mode == 1:
+        return os.path.isfile("tisztitott_nepesseg.csv")
+
 def download():
     """downloading data"""
     url = 'https://www.ksh.hu/stadat_files/nep/hu/nep0001.csv'
@@ -21,7 +32,7 @@ def download():
 
 def clear_data():
     """clearing data"""
-    if os.path.isfile("nepesseg.csv"):
+    if file_check(0):
         year = []
         total = []
         male = []
@@ -52,48 +63,49 @@ def clear_data():
         #print(df)
         df.to_csv('tisztitott_nepesseg.csv', header=True, index=False)
     else:
-        print("A nepesseg.csv file nem létezik, kérlek használd a letöltés funkciót.")
+        print(nep_err)
     
 def analyze():
     """statistics"""
-    if os.path.isfile("tisztitott_nepesseg.csv"):
+    if file_check(1):
         df = pd.read_csv('tisztitott_nepesseg.csv')
         print(df.head())
         print(df.corr())
     else:
-        print("A tisztitott_nepesseg.csv file nem létezik, kérlek használd a tisztítás vagy a letöltés funkciót.")
+        print(tiszt_err)
 
 def analyze_win():
     """GUI statistics"""
-    if os.path.isfile("tisztitott_nepesseg.csv"):
+    if file_check(1):
         df = pd.read_csv('tisztitott_nepesseg.csv')
+        corr = df.corr()
         stat_window = tk.Toplevel()
         stat_window.title("Népesség Analizátor")
         text_widget = tk.Text(stat_window, width=60, height=15)
         text_widget.pack(padx=10, pady=10)
-        text_widget.insert(tk.END, df.to_string(index=False))
+        text_widget.insert(tk.END, corr.to_string(index=False))
     else:
-        print("A tisztitott_nepesseg.csv file nem létezik, kérlek használd a tisztítás vagy a letöltés funkciót.")
+        print(tiszt_err)
 
 def line_diagram():
     """creating line-diagram"""
-    if os.path.isfile("tisztitott_nepesseg.csv"):
+    if file_check(1):
         df = pd.read_csv('tisztitott_nepesseg.csv')
         df.plot.line(x = 'year')
         plt.title("Teljes népesség alakulása + nemek szerinti változás")
         plt.show()
     else:
-        print("A tisztitott_nepesseg.csv file nem létezik, kérlek használd a tisztítás vagy a letöltés funkciót.")
+        print(tiszt_err)
 
 def dot_diagram():
     """creating dot diagram"""
-    if os.path.isfile("tisztitott_nepesseg.csv"):
+    if file_check(1):
         df = pd.read_csv('tisztitott_nepesseg.csv')
         sns.lmplot(x='year',y='total',data=df,fit_reg=True) 
         plt.title("Teljes népesség alakulása/lineáris regresszió")
         plt.show()
     else:
-        print("A tisztitott_nepesseg.csv file nem létezik, kérlek használd a tisztítás vagy a letöltés funkciót.")
+        print(tiszt_err)
 
 def window_mode():
     """Creating GUI"""
@@ -101,13 +113,13 @@ def window_mode():
     window = tk.Tk()
     window.title("Népesség Analizátor")
     window.geometry("750x300")
-    if os.path.isfile("nepesseg.csv"):
-        if os.path.isfile("tisztitott_nepesseg.csv"):
+    if file_check(0):
+        if file_check(1):
             label = tk.Label(window, text="Nyomjon meg egy gombot!", font=("Arial", 14))
         else:
-            label = tk.Label(window, text="A tisztitott_nepesseg.csv file nem létezik, kérlek használd a tisztítás vagy a letöltés funkciót.", font=("Arial", 14))
+            label = tk.Label(window, text=tiszt_err, font=("Arial", 14))
     else:
-        label = tk.Label(window, text="A nepesseg.csv file nem létezik, kérlek használd a letöltés funkciót.", font=("Arial", 14))
+        label = tk.Label(window, text=nep_err, font=("Arial", 14))
     label.pack(pady=10)
     #Gombok
     download_button = tk.Button(window, text="Letöltés", command=download)
