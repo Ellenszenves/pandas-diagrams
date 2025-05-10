@@ -1,10 +1,10 @@
 # pandas-diagrams
 
-#Függőségek
+#Függőségek  
 Szükséges library-k, indítás előtt kérlek ellenőrizd, hogy telepítve vannak e:
 pandas, matplotlib.pyplot, requests, csv, seaborn
 
-#Használat
+#Használat  
 Indítás: python3 solution.py
 Egy interaktív menü segítségével érhetjük el a funkciókat.
 1. Letöltés
