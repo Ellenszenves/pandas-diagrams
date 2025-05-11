@@ -2,7 +2,7 @@
 
 #Függőségek  
 Szükséges library-k, indítás előtt kérlek ellenőrizd, hogy telepítve vannak-e:  
-pandas, matplotlib.pyplot, requests, csv, seaborn, tkinter, os.path
+pandas, matplotlib.pyplot, requests, csv, seaborn, tkinter, os.path, sys
 
 #Használat  
 Indítás: python3 solution.py  
