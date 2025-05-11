@@ -1,26 +1,32 @@
+"""Importing modules"""
+import sys
+import csv
+import tkinter as tk
+import os.path
 import pandas as pd
 import matplotlib.pyplot as plt
 import requests
-import csv
 import seaborn as sns
-import tkinter as tk
-import os.path
 
 #Error messages
-tiszt_err = 'A tisztitott_nepesseg.csv file nem létezik, kérlek használd a tisztítás vagy a letöltés funkciót.'
-nep_err = 'A nepesseg.csv file nem létezik, kérlek használd a letöltés funkciót.'
+tiszt_err = """
+A tisztitott_nepesseg.csv file nem létezik, 
+kérlek használd a tisztítás vagy a letöltés funkciót."""
+nep_err = """
+A nepesseg.csv file nem létezik, 
+kérlek használd a letöltés funkciót."""
 
-def file_check(mode):
+def file_check(mode:int):
     """Check for the required files"""
     if mode == 0:
         return os.path.isfile("nepesseg.csv")
-    elif mode == 1:
+    if mode == 1:
         return os.path.isfile("tisztitott_nepesseg.csv")
 
 def download():
     """downloading data"""
     url = 'https://www.ksh.hu/stadat_files/nep/hu/nep0001.csv'
-    response = requests.get(url)
+    response = requests.get(url, timeout=10)
     file_path = 'nepesseg.csv'
     if response.status_code == 200:
         with open(file_path, 'wb') as file:
@@ -58,13 +64,13 @@ def clear_data():
                         if column != "összesen":
                             total.append(column.replace(" ", ""))
                 i += 1
-        dict = {'year': year, 'male': male, 'woman': woman,'total': total}
-        df = pd.DataFrame(dict)
+        my_dict = {'year': year, 'male': male, 'woman': woman,'total': total}
+        df = pd.DataFrame(my_dict)
         #print(df)
         df.to_csv('tisztitott_nepesseg.csv', header=True, index=False)
     else:
         print(nep_err)
-    
+
 def analyze():
     """statistics"""
     if file_check(1):
@@ -111,7 +117,7 @@ def dot_diagram():
     """creating dot diagram"""
     if file_check(1):
         df = pd.read_csv('tisztitott_nepesseg.csv')
-        sns.lmplot(x='year',y='total',data=df,fit_reg=True) 
+        sns.lmplot(x='year',y='total',data=df,fit_reg=True)
         plt.title("Teljes népesség alakulása/lineáris regresszió")
         plt.show()
     else:
@@ -144,12 +150,12 @@ def window_mode():
     line_button.pack(pady=5)
     exit_button = tk.Button(window, text="Kilépés", command=exit)
     exit_button.pack(pady=5)
-
     window.mainloop()
-    
+
 def main_menu():
     """interactive menu"""
-    print("Hello! Funkciók:\n 1. Letöltés\n 2. Tisztítás\n 3. Statisztika\n 4. Pont-diagram\n 5. Vonal-diagram\n 6. Grafikus felület\n 7. Kilépés")
+    print("Hello! Funkciók:\n 1. Letöltés\n 2. Tisztítás\n 3. Statisztika\n " \
+    "4. Pont-diagram\n 5. Vonal-diagram\n 6. Grafikus felület\n 7. Kilépés")
     func = input("Kívánt funkció: ")
     if func == "1":
         download()
@@ -165,7 +171,7 @@ def main_menu():
         window_mode()
     elif func == "7":
         print("Bye!")
-        exit
+        sys.exit()
     else:
         print("Ilyen funkció nem létezik.")
         main_menu()
