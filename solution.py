@@ -71,6 +71,16 @@ def analyze():
         df = pd.read_csv('tisztitott_nepesseg.csv')
         print(df.head())
         print(df.corr())
+        print("Teljes népesség átlaga:")
+        print(df.loc[:, 'total'].mean())
+        print("Különbség az előző évhez képest:")
+        print(df.diff())
+        df_diff = df.diff()
+        print("Átlagos népességszám változás:")
+        print(df_diff.loc[:, 'total'].mean())
+        df_latest = df_diff.loc[df_diff['year'] == 1.0]
+        print("2001-től a népesség számának átlagos változása:")
+        print(df_latest.loc[:, 'total'].mean())
     else:
         print(tiszt_err)
 
